@@ -7,6 +7,7 @@ import { OpenseaAsset } from './types/OpenseaAsset';
 import { isEnsDomain, joinClassNames } from './utils';
 import {
   fetchOpenseaAssets,
+  fetchOpenseaAssetsByContract,
   OPENSEA_API_OFFSET,
   resolveEnsDomain,
 } from './api';
@@ -20,6 +21,12 @@ export interface NftGalleryProps {
    * Required.
    */
   ownerAddress: string;
+  
+  /**
+   * Ethereum address (`0x...`) or ENS domain (`kittys.eth`) for which the gallery should contain associated NFTs.
+   * Required.
+   */
+  contractAddress: string;
 
   /**
    * Display asset metadata underneath the NFT.
@@ -116,13 +123,19 @@ export const NftGallery: React.FC<NftGalleryProps> = ({
 
   const loadAssets = async (
     ownerAddress: NftGalleryProps['ownerAddress'],
+    contractAddress: NftGalleryProps['contractAddress'],
     offset: number
   ) => {
     if (assets.length === 0) setIsLoading(true);
     const resolvedOwner = isEnsDomain(ownerAddress)
       ? await resolveEnsDomain(ownerAddress)
       : ownerAddress;
-    const rawAssets = await fetchOpenseaAssets(resolvedOwner, offset);
+    let rawAssets;
+    if (!contractAddress){
+      rawAssets = await fetchOpenseaAssets(resolvedOwner, offset);
+    } else {
+      rawAssets = await fetchOpenseaAssetsByContract(resolvedOwner, contractAddress, offset);
+    }
     setAssets((prevAssets) => [...prevAssets, ...rawAssets]);
     setCanLoadMore(rawAssets.length === OPENSEA_API_OFFSET);
     if (assets.length === 0) setIsLoading(false);
@@ -176,7 +189,7 @@ export const NftGallery: React.FC<NftGalleryProps> = ({
   };
 
   useEffect(() => {
-    loadAssets(ownerAddress, currentOffset);
+    loadAssets(ownerAddress, contractAddress, currentOffset);
   }, [ownerAddress, currentOffset]);
 
   useEffect(() => {
