@@ -197,7 +197,7 @@ export const NftGallery: React.FC<NftGalleryProps> = ({
   };
 
   useEffect(() => {
-    loadAssets(ownerAddress, contractAddress, currentOffset);
+    loadAssets(ownerAddress, contractAddress, devnet, currentOffset);
   }, [ownerAddress, currentOffset]);
 
   useEffect(() => {
