@@ -34,9 +34,9 @@ export const resolveEnsDomain = async (
 
 export const fetchOpenseaAssets = async (
   owner: string | null,
-  offset = 0
+  offset = 0  
 ): Promise<OpenseaAsset[]> => {
-  try {
+  try { 
     const result = await fetch(
       `https://api.opensea.io/api/v1/assets?owner=${owner}&limit=50&offset=${offset}`
     );
@@ -55,11 +55,16 @@ export const fetchOpenseaAssets = async (
 export const fetchOpenseaAssetsByContract = async (
   owner: string | null,
   contract: string | null,
+  testnet: boolean | false,
   offset = 0
 ): Promise<OpenseaAsset[]> => {
   try {
+    let api = "https://api.opensea.io/api/v1/";
+    if (testnet){
+      api "https://rinkeby-\api.opensea.io/api/v1/";
+    }
     const result = await fetch(
-      `https://api.opensea.io/api/v1/assets?owner=${owner}&asset_contract_address=${contract}&limit=50&offset=${offset}`
+      `${api}assets?owner=${owner}&asset_contract_address=${contract}&limit=50&offset=${offset}`
     );
     if (result.status !== 200) {
       const error = await result.text();
