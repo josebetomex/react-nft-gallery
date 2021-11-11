@@ -134,7 +134,7 @@ export const NftGallery: React.FC<NftGalleryProps> = ({
     const resolvedOwner = isEnsDomain(ownerAddress)
       ? await resolveEnsDomain(ownerAddress)
       : ownerAddress;
-    let rawAssets;
+    let rawAssets = [];
     if (!contractAddress){
       rawAssets = await fetchOpenseaAssets(resolvedOwner, offset);
     } else {
