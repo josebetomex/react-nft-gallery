@@ -61,7 +61,7 @@ export const fetchOpenseaAssetsByContract = async (
   try {
     let api = "https://api.opensea.io/api/v1/";
     if (testnet){
-      api "https://rinkeby-\api.opensea.io/api/v1/";
+      api "https://rinkeby-api.opensea.io/api/v1/";
     }
     const result = await fetch(
       `${api}assets?owner=${owner}&asset_contract_address=${contract}&limit=50&offset=${offset}`
