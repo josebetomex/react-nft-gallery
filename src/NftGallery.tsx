@@ -32,6 +32,10 @@ export interface NftGalleryProps {
    * Display asset metadata underneath the NFT.
    * Defaults to `true`.
    */
+  
+  //fetchOpenseaAssetsByContract
+  devnet: boolean;
+  
   metadataIsVisible?: boolean;
 
   /**
@@ -134,7 +138,7 @@ export const NftGallery: React.FC<NftGalleryProps> = ({
     if (!contractAddress){
       rawAssets = await fetchOpenseaAssets(resolvedOwner, offset);
     } else {
-      rawAssets = await fetchOpenseaAssetsByContract(resolvedOwner, contractAddress, offset);
+      rawAssets = await fetchOpenseaAssetsByContract(resolvedOwner, contractAddress, devnet, offset);
     }
     setAssets((prevAssets) => [...prevAssets, ...rawAssets]);
     setCanLoadMore(rawAssets.length === OPENSEA_API_OFFSET);
