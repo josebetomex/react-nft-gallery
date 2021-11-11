@@ -36,6 +36,7 @@ export interface NftGalleryProps {
   //fetchOpenseaAssetsByContract
   devnet: boolean;
   
+  
   metadataIsVisible?: boolean;
 
   /**
@@ -104,6 +105,8 @@ export interface NftGalleryProps {
 
 export const NftGallery: React.FC<NftGalleryProps> = ({
   ownerAddress = '',
+  contractAddress = '',
+  devnet = false,
   darkMode = false,
   metadataIsVisible = true,
   showcaseMode = false,
@@ -128,6 +131,7 @@ export const NftGallery: React.FC<NftGalleryProps> = ({
   const loadAssets = async (
     ownerAddress: NftGalleryProps['ownerAddress'],
     contractAddress: NftGalleryProps['contractAddress'],
+    devnet: NftGalleryProps['devnet'],
     offset: number
   ) => {
     if (assets.length === 0) setIsLoading(true);
